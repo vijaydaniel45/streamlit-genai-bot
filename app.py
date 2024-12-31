@@ -13,7 +13,7 @@ load_dotenv()
 
 # Groq API settings
 GROQ_API_URL = os.getenv("GROQ_API_URL", "https://api.groq.com/openai/v1/chat/completions")
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "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")  # Groq API key loaded from .env file
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")  # Groq API key loaded from .env file
 
 # Initialize session state for code persistence and response memory
 if "extracted_code" not in st.session_state:
