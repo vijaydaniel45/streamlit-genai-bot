@@ -2,18 +2,21 @@ import os
 import pandas as pd
 import requests
 import streamlit as st
-from dotenv import load_dotenv
 import matplotlib.pyplot as plt
 import io
 import contextlib
 import re
 
 # Load environment variables
-load_dotenv()
+#load_dotenv()
+
+# Groq API settings Here, create your own API key from api.groq.com
+#GROQ_API_URL = os.getenv("GROQ_API_URL", "https://api.groq.com/openai/v1/chat/completions")
+#GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")  # Groq API key loaded from .env file
 
 # Groq API settings
-GROQ_API_URL = os.getenv("GROQ_API_URL", "https://api.groq.com/openai/v1/chat/completions")
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")  # Groq API key loaded from .env file
+GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
+GROQ_API_KEY = "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"
 
 # Initialize session state for code persistence and response memory
 if "extracted_code" not in st.session_state:
