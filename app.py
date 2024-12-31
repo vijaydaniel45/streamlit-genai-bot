@@ -7,13 +7,6 @@ import io
 import contextlib
 import re
 
-# Load environment variables
-#load_dotenv()
-
-# Groq API settings Here, create your own API key from api.groq.com
-#GROQ_API_URL = os.getenv("GROQ_API_URL", "https://api.groq.com/openai/v1/chat/completions")
-#GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")  # Groq API key loaded from .env file
-
 # Groq API settings
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 GROQ_API_KEY = "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"
@@ -41,9 +34,8 @@ def main():
         clear_responses()
 
     if uploaded_file:
-        # Reset session state only when a new file is uploaded
-        if uploaded_file != st.session_state.get("uploaded_file", None):
-            reset_session_state(uploaded_file)
+        # Save the uploaded file to the current directory
+        save_uploaded_file(uploaded_file)
 
         try:
             # Handle file format and display data
@@ -97,6 +89,15 @@ def main():
             st.write("### Generated Plot")
             st.image(st.session_state.generated_plot, caption="Generated Plot", use_container_width=True)
 
+def save_uploaded_file(uploaded_file):
+    """Save the uploaded file to the current directory."""
+    try:
+        with open(uploaded_file.name, "wb") as f:
+            f.write(uploaded_file.getbuffer())
+        st.success(f"File saved as {uploaded_file.name}")
+    except Exception as e:
+        st.error(f"Error saving file: {e}")
+
 def process_with_groq_api(user_prompt, uploaded_file=None):
     """Send user prompt to Groq API and extract and display the returned code."""
     try:
@@ -140,13 +141,6 @@ def clear_responses():
     st.session_state.execution_output = ""
     st.session_state.generated_plot = None
     st.info("Previous responses cleared.")
-
-def reset_session_state(uploaded_file):
-    """Reset session state to handle new file uploads."""
-    st.session_state.uploaded_file = uploaded_file
-    st.session_state.extracted_code = ""
-    st.session_state.execution_output = ""
-    st.session_state.generated_plot = None
 
 def extract_code_from_response(response):
     """Extract the script from the response."""
