@@ -48,7 +48,7 @@ def main():
     st.sidebar.write(f"Selected Temperature: {temperature}")
 
     # Display the text area for entering a prompt
-    user_prompt = st.text_area("Enter your prompt for code generation (e.g., Analyze, Process, Summarize):")
+    user_prompt = st.text_area("Enter your prompt for code generation (e.g., can you generate python script to get pie chart for getting DependentSiteCount by City? Here DependentSiteCount and City are the column names):")
 
     # Button to clear previous responses
     if st.sidebar.button("Clear Previous Responses"):
