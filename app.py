@@ -26,6 +26,27 @@ def main():
     # File upload supporting various formats
     uploaded_file = st.sidebar.file_uploader("Upload your .csv, .txt, .log, .xlsx, or .xls file", type=["csv", "txt", "log", "xlsx", "xls"])
 
+    # Model selection in sidebar
+    model = st.sidebar.selectbox("Select Model", [
+        "distil-whisper-large-v3-en",
+        "gemma2-9b-it",
+        "llama-3.3-70b-versatile",
+        "llama-3.1-8b-instant",
+        "llama-guard-3-8b",
+        "llama3-70b-8192",
+        "llama3-8b-8192",
+        "mixtral-8x7b-32768",
+        "whisper-large-v3",
+        "whisper-large-v3-turbo"
+    ], index=2)  # default to "llama-3.3-70b-versatile"
+
+    # Temperature slider in sidebar
+    temperature = st.sidebar.slider("Select Temperature", 0.0, 2.0, 1.0)
+
+    # Display the selected model and temperature
+    st.sidebar.write(f"Selected Model: {model}")
+    st.sidebar.write(f"Selected Temperature: {temperature}")
+
     # Display the text area for entering a prompt
     user_prompt = st.text_area("Enter your prompt for code generation (e.g., Analyze, Process, Summarize):")
 
@@ -66,7 +87,7 @@ def main():
     if st.button("Generate Response"):
         if user_prompt:
             st.info("Sending prompt to Groq API...")
-            process_with_groq_api(user_prompt, uploaded_file)  # Pass uploaded_file if available
+            process_with_groq_api(user_prompt, uploaded_file, model, temperature)  # Pass model and temperature as arguments
         else:
             st.warning("Please enter a prompt to generate code.")
 
@@ -98,7 +119,7 @@ def save_uploaded_file(uploaded_file):
     except Exception as e:
         st.error(f"Error saving file: {e}")
 
-def process_with_groq_api(user_prompt, uploaded_file=None):
+def process_with_groq_api(user_prompt, uploaded_file=None, model="llama-3.3-70b-versatile", temperature=1.0):
     """Send user prompt to Groq API and extract and display the returned code."""
     try:
         if GROQ_API_KEY:
@@ -107,10 +128,11 @@ def process_with_groq_api(user_prompt, uploaded_file=None):
                 "Content-Type": "application/json"
             }
 
-            # Prepare the payload with only the latest prompt
+            # Prepare the payload with the latest prompt, model, and temperature
             prompt = f"{user_prompt} from the uploaded file named {uploaded_file.name}" if uploaded_file else user_prompt
             payload = {
-                "model": "llama-3.3-70b-versatile",
+                "model": model,
+                "temperature": temperature,
                 "messages": [{"role": "user", "content": prompt}]
             }
 
