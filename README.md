@@ -1,3 +1,5 @@
+Try here https://vijayd-genai.streamlit.app/
+
 # GenAI App for Code Generation and Execution
 
 Welcome to the GenAI App built using Streamlit, which allows users to upload data files and generate code to analyze them. This app integrates with the Groq API to process user inputs and generate Python code, which can then be executed to visualize the results. The app supports various file types, including CSV, Excel, text, and log files.
