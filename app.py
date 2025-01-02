@@ -8,8 +8,8 @@ import contextlib
 import re
 
 # Groq API settings
-GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-GROQ_API_KEY = "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"
+GROQ_API_URL = st.secrets["GROQ_API"]["GROQ_API_URL"]
+GROQ_API_KEY = st.secrets["GROQ_API"]["GROQ_API_KEY"]
 
 # Initialize session state for code persistence and response memory
 if "extracted_code" not in st.session_state:
@@ -28,16 +28,12 @@ def main():
 
     # Model selection in sidebar
     model = st.sidebar.selectbox("Select Model", [
-        "distil-whisper-large-v3-en",
         "gemma2-9b-it",
         "llama-3.3-70b-versatile",
         "llama-3.1-8b-instant",
-        "llama-guard-3-8b",
         "llama3-70b-8192",
         "llama3-8b-8192",
-        "mixtral-8x7b-32768",
-        "whisper-large-v3",
-        "whisper-large-v3-turbo"
+        "mixtral-8x7b-32768"
     ], index=2)  # default to "llama-3.3-70b-versatile"
 
     # Temperature slider in sidebar
@@ -191,3 +187,4 @@ def run_code(code):
 # Run the Streamlit app
 if __name__ == "__main__":
     main()
+
