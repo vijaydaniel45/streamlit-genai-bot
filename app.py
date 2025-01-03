@@ -11,13 +11,30 @@ import re
 GROQ_API_URL = st.secrets["GROQ_API"]["GROQ_API_URL"]
 GROQ_API_KEY = st.secrets["GROQ_API"]["GROQ_API_KEY"]
 
-# Initialize session state for code persistence and response memory
+# Initialize session state for code persistence, response memory, and login count
 if "extracted_code" not in st.session_state:
     st.session_state.extracted_code = ""
 if "execution_output" not in st.session_state:
     st.session_state.execution_output = ""
 if "generated_plot" not in st.session_state:
     st.session_state.generated_plot = None
+if "login_count" not in st.session_state:
+    st.session_state.login_count = 0
+
+# Increment the login count for a new session
+if "session_initialized" not in st.session_state:
+    st.session_state.session_initialized = True
+    st.session_state.login_count += 1
+
+# Display login count at the top right corner
+st.markdown(
+    f"""
+    <div style="position: fixed; top: 10px; right: 10px; font-size: 20px; background-color: #f0f0f0; padding: 10px; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1);">
+        Users logged in: {st.session_state.login_count}
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 def main():
     st.title("Welcome to Vijay's GenAI App")
